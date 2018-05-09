@@ -45,6 +45,9 @@ function isObjNotArr(obj) {
 // MERGE
 export function merge(old, neww) {
     let obj = { ...old };
+    if (typeof neww === 'function') {
+        neww = neww(old);
+    }
     for (let prop in neww) {
         if (obj.hasOwnProperty(prop) && isObjNotArr(obj[prop]) && isObjNotArr(neww[prop])) {
             obj[prop] = merge(obj[prop], neww[prop]);

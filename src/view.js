@@ -22,12 +22,24 @@ export default function createView(update) {
     }
     // VIEW
     return class View extends Component {
-        incAirTemp = () => changeTemp('air', this.props.air.temp + 1);
-        decAirTemp = () => changeTemp('air', this.props.air.temp - 1);
-        changeAirUnit = () => changeUnit('air', this.props.air.unit, this.props.air.temp);
-        incWaterTemp = () => changeTemp('water', this.props.water.temp + 1);
-        decWaterTemp = () => changeTemp('water', this.props.water.temp - 1);
-        changeWaterUnit = () => changeUnit('water', this.props.water.unit, this.props.water.temp);
+        incAirTemp = () => {
+            changeTemp('air', this.props.air.temp + 1);
+        }
+        decAirTemp = () => {
+            changeTemp('air', this.props.air.temp - 1);
+        }
+        changeAirUnit = () => {
+            changeUnit('air', this.props.air.unit, this.props.air.temp);
+        }
+        incWaterTemp = () => {
+            changeTemp('water', this.props.water.temp + 1);
+        }
+        decWaterTemp = () => {
+            changeTemp('water', this.props.water.temp - 1);
+        }
+        changeWaterUnit = () => {
+            changeUnit('water', this.props.water.unit, this.props.water.temp);
+        }
         render() {
             let { incAirTemp, decAirTemp, changeAirUnit, incWaterTemp, decWaterTemp, changeWaterUnit } = this;
             let { air, water } = this.props;
