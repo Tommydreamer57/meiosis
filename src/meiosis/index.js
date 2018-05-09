@@ -2,18 +2,14 @@
 // STREAM
 export function stream(initial) {
     let mapFunctions = [];
-    console.log("CREATING NEW STREAM", mapFunctions.length);
     function createdStream(value) {
-        console.log("INVOKED STREAM", mapFunctions.length);
         mapFunctions.forEach(fn => fn(value));
     }
     createdStream.map = function (mapFn) {
-        console.log("MAPPING STREAM", mapFunctions.length);
         let newInitial;
         if (initial !== undefined) newInitial = mapFn(initial);
         let newStream = stream(newInitial);
         mapFunctions.push(function (value) {
-            console.log("INVOKED MAP FUNCTION", mapFunctions.length);
             newStream(mapFn(value));
         });
         return newStream;
@@ -23,11 +19,9 @@ export function stream(initial) {
 
 // SCAN
 export function scan(accumulator, initial, sourceStream) {
-    console.log("SCANNING STREAM");
     let newStream = stream(initial);
     let accumulated = initial;
     sourceStream.map(function (value) {
-        console.log("INVOKED SOURCESTREAM MAP FUNCTION");
         accumulated = accumulator(accumulated, value);
         newStream(accumulated);
     });
@@ -56,6 +50,36 @@ export function merge(old, neww) {
         }
     }
     return obj;
+}
+
+// NEST UPDATE
+function nestUpdate(update, prop) {
+    return function (cb) {
+        update(function (model) {
+            // model[prop] = cb(model[prop]);
+            // return model;
+            return { ...model, [prop]: cb(model[prop]) };
+        });
+    }
+}
+
+// NEST
+export function nestComponent(create, update, prop) {
+    let component = create(nestUpdate(update, prop));
+    let result = { ...component };
+    if (component.model) {
+        result.model = function () {
+            return {
+                [prop]: component.model()
+            };
+        }
+    }
+    if (component.view) {
+        result.view = function (model) {
+            return component.view(model[prop] || {});
+        }
+    }
+    return result;
 }
 
 export default null;

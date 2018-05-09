@@ -1,22 +1,22 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { stream, scan, merge } from './meiosis';
-import createView from './view';
+import { stream, scan, merge, nestComponent } from './meiosis';
+import createTemperaturePair from './view';
 
 (function (initialModel) {
 
     // UPDATE
     let update = stream(initialModel);
 
-    // VIEW
-    let View = createView(update);
+    // APP
+    let app = nestComponent(createTemperaturePair, update, 'temperature');
 
     // MODELS
     let models = scan(merge, initialModel, update);
 
     // RENDER
     function render(model) {
-        ReactDOM.render(<View {...model} />, document.getElementById('root'));
+        ReactDOM.render(app.view(model), document.getElementById('root'));
     }
 
     // CONNECT RENDER TO STREAMS
@@ -24,6 +24,10 @@ import createView from './view';
     models(initialModel);
 
 })({
-    air: { temp: 0, unit: 'C' },
-    water: { temp: 0, unit: 'C' }
+    // INITIAL STATE
+    temperature: {
+        air: { temp: 20, unit: 'C'},
+        water: { temp: 20, unit: 'C'},
+        pairs: []
+    },
 });

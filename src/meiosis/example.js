@@ -3,7 +3,7 @@ import { stream, scan, merge } from '.';
 
 // -- Utility code
 
-var nestUpdate = function (update, prop) {
+function nestUpdate(update, prop) {
     return function (func) {
         update(function (model) {
             model[prop] = func(model[prop]);
@@ -12,7 +12,7 @@ var nestUpdate = function (update, prop) {
     };
 };
 
-var nest = function (create, update, prop) {
+function nest(create, update, prop) {
     var component = create(nestUpdate(update, prop));
     var result = Object.assign({}, component);
     if (component.model) {
@@ -32,7 +32,7 @@ var nest = function (create, update, prop) {
 
 // -- Application code
 
-var convert = function (value, to) {
+function convert(value, to) {
     if (to === "C") {
         return Math.round((value - 32) / 9 * 5);
     }
@@ -41,9 +41,9 @@ var convert = function (value, to) {
     }
 };
 
-var createTemperature = function (label, init) {
+function createTemperature(label, init) {
     return function (update) {
-        var increase = function (amount) {
+        function increase(amount) {
             return function (_event) {
                 update(function (model) {
                     model.value += amount;
@@ -51,7 +51,7 @@ var createTemperature = function (label, init) {
                 });
             };
         };
-        var changeUnits = function (_event) {
+        function changeUnits(_event) {
             update(function (model) {
                 var newUnits = model.units === "C" ? "F" : "C";
                 model.value = convert(model.value, newUnits);
@@ -60,11 +60,11 @@ var createTemperature = function (label, init) {
             });
         };
 
-        var model = function () {
+        function model() {
             return Object.assign({ value: 22, units: "C" }, init);
         };
 
-        var view = function (model) {
+        function view(model) {
             return (
                 <div className="temperature">
                     <span>{label} Temperature: {model.value}&deg;{model.units}</span>
@@ -78,20 +78,20 @@ var createTemperature = function (label, init) {
                 </div>
             );
         };
-        return { model: model, view: view };
+        return { model, view };
     };
 };
 
-var createTemperaturePair = function (update) {
+function createTemperaturePair(update) {
     var air = nest(createTemperature("Air"), update, "air");
     var water = nest(createTemperature("Water", { value: 84, units: "F" }),
         update, "water");
 
-    var model = function () {
+    function model() {
         return Object.assign(air.model(), water.model());
     };
 
-    var view = function (model) {
+    function view(model) {
         return (
             <div>
                 {air.view(model)}
@@ -99,10 +99,10 @@ var createTemperaturePair = function (update) {
             </div>
         );
     };
-    return { model: model, view: view };
+    return { model, view };
 };
 
-var createApp = function (update) {
+function createApp(update) {
     return nest(createTemperaturePair, update, "temperatures");
 };
 
@@ -115,7 +115,7 @@ var models = scan(function (model, func) {
     return func(model);
 }, app.model(), update);
 
-var element = document.getElementById("app");
+var element = document.getElementById("root");
 
 models.map(function (model) {
     ReactDOM.render(app.view(model), element);

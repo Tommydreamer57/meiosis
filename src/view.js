@@ -1,68 +1,81 @@
-import React, { Component } from 'react';
+import React from 'react';
+import { nestComponent } from './meiosis';
 
-export default function createView(update) {
-    // EVENT
-    function changeUnit(target, unit, temp) {
-        switch (unit) {
-            case 'C':
-                unit = 'F';
-                temp = Math.round(temp * 9 / 5 + 32);
-                break;
-            case 'F':
-                unit = 'C';
-                temp = Math.round((temp - 32) / 9 * 5);
-                break;
-            default:
-                break;
+// CHILD
+function createTemperature(label, init = {}) {
+    return function (update) {
+        // EVENT
+        function changeTemp(temp) {
+            update(model => ({ ...model, temp }));
         }
-        update({ [target]: { unit, temp } });
-    }
-    function changeTemp(target, temp) {
-        update({ [target]: { temp } });
-    }
-    // VIEW
-    return class View extends Component {
-        incAirTemp = () => {
-            changeTemp('air', this.props.air.temp + 1);
+        function changeUnit() {
+            update(model => {
+                let { unit, temp } = model;
+                switch (unit) {
+                    case 'C':
+                        unit = 'F';
+                        temp = Math.round(temp * 9 / 5 + 32);
+                        break;
+                    case 'F':
+                        unit = 'C';
+                        temp = Math.round((temp - 32) / 9 * 5);
+                        break;
+                    default:
+                        unit = 'C';
+                        break;
+                }
+                return { ...model, unit, temp };
+            });
         }
-        decAirTemp = () => {
-            changeTemp('air', this.props.air.temp - 1);
+        function model() {
+            return { temp: 20, unit: 'C', ...init };
         }
-        changeAirUnit = () => {
-            changeUnit('air', this.props.air.unit, this.props.air.temp);
-        }
-        incWaterTemp = () => {
-            changeTemp('water', this.props.water.temp + 1);
-        }
-        decWaterTemp = () => {
-            changeTemp('water', this.props.water.temp - 1);
-        }
-        changeWaterUnit = () => {
-            changeUnit('water', this.props.water.unit, this.props.water.temp);
-        }
-        render() {
-            let { incAirTemp, decAirTemp, changeAirUnit, incWaterTemp, decWaterTemp, changeWaterUnit } = this;
-            let { air, water } = this.props;
+        function view(model) {
+            if (model.temp === undefined) update(model => ({ ...model, temp: 0 }));
+            if (model.unit === undefined) update(model => ({ ...model, unit: 'C' }));
+            console.log(model);
             return (
-                <div id="view">
+                <div>
                     <div>
-                        <h3>AIR: {air.temp} {air.unit}</h3>
-                        <button onClick={incAirTemp} >+</button>
-                        <button onClick={decAirTemp} >-</button>
-                        <button onClick={changeAirUnit} >
+                        <h3>{label} Temperature: {model.temp} {model.unit || 'C'}</h3>
+                        <button onClick={() => changeTemp((model.temp || 0) + 1)} >+</button>
+                        <button onClick={() => changeTemp((model.temp || 0) - 1)} >-</button>
+                        <button onClick={changeUnit} >
                             CH
-                    </button>
-                    </div>
-                    <div>
-                        <h3>WATER: {water.temp} {water.unit}</h3>
-                        <button onClick={incWaterTemp} >+</button>
-                        <button onClick={decWaterTemp} >-</button>
-                        <button onClick={changeWaterUnit} >
-                            CH
-                    </button>
+                        </button>
                     </div>
                 </div>
             );
         }
+        return { model, view };
     }
+}
+
+// PARENT
+export default function createTemperaturePair(update) {
+    let air = nestComponent(createTemperature("Air"), update, 'air');
+    let water = nestComponent(createTemperature('Water', { temp: 26 }), update, 'water');
+    let ground = nestComponent(createTemperature('Ground', { temp: 5, unit: 'F' }), update, 'ground');
+    function addPair() {
+        update(model => ({
+            air: { temp: 0, unit: 'C' },
+            water: { temp: 0, unit: 'C' },
+            pairs: [{ air: model.air, water: model.water }, ...model.pairs]
+        }));
+    }
+    function model() {
+        return { ...air.model(), ...water.model() };
+    }
+    function view(model) {
+        console.log(model);
+        return (
+            <div>
+                {air.view(model)}
+                {water.view(model)}
+                {ground.view(model)}
+                <button onClick={addPair} >ADD</button>
+            </div>
+        );
+    }
+    return { model, view };
 }
