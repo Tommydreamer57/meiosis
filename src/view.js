@@ -31,19 +31,15 @@ function createTemperature(label, init = {}) {
             return { temp: 20, unit: 'C', ...init };
         }
         function view(model) {
-            if (model.temp === undefined) update(model => ({ ...model, temp: 0 }));
-            if (model.unit === undefined) update(model => ({ ...model, unit: 'C' }));
             console.log(model);
             return (
                 <div>
-                    <div>
-                        <h3>{label} Temperature: {model.temp} {model.unit || 'C'}</h3>
-                        <button onClick={() => changeTemp((model.temp || 0) + 1)} >+</button>
-                        <button onClick={() => changeTemp((model.temp || 0) - 1)} >-</button>
-                        <button onClick={changeUnit} >
-                            CH
-                        </button>
-                    </div>
+                    <h3>{label} Temperature: {model.temp || 0} {model.unit || 'C'}</h3>
+                    <button onClick={() => changeTemp((model.temp || 0) + 1)} >+</button>
+                    <button onClick={() => changeTemp((model.temp || 0) - 1)} >-</button>
+                    <button onClick={changeUnit} >
+                        CH
+                    </button>
                 </div>
             );
         }
@@ -56,15 +52,16 @@ export default function createTemperaturePair(update) {
     let air = nestComponent(createTemperature("Air"), update, 'air');
     let water = nestComponent(createTemperature('Water', { temp: 26 }), update, 'water');
     let ground = nestComponent(createTemperature('Ground', { temp: 5, unit: 'F' }), update, 'ground');
-    function addPair() {
-        update(model => ({
-            air: { temp: 0, unit: 'C' },
-            water: { temp: 0, unit: 'C' },
-            pairs: [{ air: model.air, water: model.water }, ...model.pairs]
-        }));
-    }
+    // function addPair() {
+    //     update(model => ({
+    //         air: { temp: 0, unit: 'C' },
+    //         water: { temp: 0, unit: 'C' },
+    //         pairs: [{ air: model.air, water: model.water }, ...model.pairs]
+    //     }));
+    // }
     function model() {
-        return { ...air.model(), ...water.model() };
+        console.log("GETTING PARENT MODEL");
+        return { ...air.model(), ...water.model(), ...ground.model() };
     }
     function view(model) {
         console.log(model);
@@ -73,7 +70,7 @@ export default function createTemperaturePair(update) {
                 {air.view(model)}
                 {water.view(model)}
                 {ground.view(model)}
-                <button onClick={addPair} >ADD</button>
+                {/* <button onClick={addPair} >ADD</button> */}
             </div>
         );
     }

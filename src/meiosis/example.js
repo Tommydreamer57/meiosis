@@ -1,5 +1,4 @@
 import React from 'react';
-import { stream, scan, merge } from '.';
 
 // -- Utility code
 
