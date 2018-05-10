@@ -1,0 +1,18 @@
+
+header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: rgba(0, 0, 0, 0.2);
+}
+
+header ul {
+    display: flex;
+    justify-content: space-around;
+    
+}
+
+header a {
+    padding: 24px 18px;
+    text-decoration: none;
+}

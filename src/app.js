@@ -1,122 +1,60 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
-import { nestComponent } from './meiosis';
-import createTemperaturePair from './view';
+import { BrowserRouter as Router } from 'react-router-dom';
+import createStatics from './statics/statics';
+import createRoutes from './routes/routes';
+import './app.css';
 
-
-// LIST
-function createPairsList(update) {
-    function model() {
-        return { pairs: [] };
-    }
-    function view(model, { addPair }) {
-        console.log(model);
-        return (
-            <div>
-                {model.pairs.map(pair => <div>{JSON.stringify(pair)}</div>)}
-                <button onClick={addPair} >ADD</button>
-            </div>
-        );
-    }
-    return { model, view };
-}
-
-// CREATE LIST
-function createList(update) {
-    function handleInput({ target: { value } }) {
-        update(model => ({ ...model, input: value }));
-    }
-    function addItem() {
-        update(model => ({ ...model, input: '', items: [model.input, ...model.items] }));
-    }
-    function model() {
-        return { input: '', items: [] };
-    }
-    function onKeyDown({ key }) {
-        if (key === 'Enter') addItem();
-    }
-    function view(model) {
-        console.log(model);
-        return (
-            <div>
-                <input onChange={handleInput} onKeyDown={onKeyDown} value={model.input} />
-                <button onClick={addItem} >ADD</button>
-                <div>
-                    {model.items.map(item => <p>{item}</p>)}
-                </div>
-            </div>
-        )
-    }
-    return { model, view }
-}
-
-// ROOT COMPONENT
-export function createApp(update) {
-    let temperature = nestComponent(createTemperaturePair, update, 'temperature');
-    let pairs = createPairsList(update);
-    let list = nestComponent(createList, update, 'list');
-    console.log(temperature);
-    console.log(list);
-    function addPair() {
-        update(model => ({
-            ...model,
-            temperatures: {
-                air: { temp: 0, unit: 'C' },
-                water: { temp: 0, unit: 'C' },
-                ground: { temp: 0, unit: 'C' }
-            },
-            pairs: [
-                { temperatures: model.temperatures },
-                ...model.pairs,
-                (function () {console.log(model)})()
-            ]
-        }));
-    }
-    function model() {
-        return { ...temperature.model(), ...list.model(), ...pairs.model() };
-    }
-    function view(model) {
-        console.log(model);
-        return (
-            <div id="app">
-                {temperature.view(model)}
-                {pairs.view(model, { addPair })}
-                {list.view(model)}
-            </div>
-        )
-    }
-    return { model, view };
-}
-
-// INITIAL MODEL
-export function initialModel() {
+// APP
+export default function createApp(update) {
+    // CHILDREN
+    let statics = createStatics(update);
+    let routes = createRoutes(update);
+    // COMPONENT
     return {
-        temperature: {
-            air: {
-                temp: 20,
-                unit: 'C'
-            },
-            water: {
-                temp: 20,
-                unit: 'C'
-            },
-            ground: {
-                temp: 20,
-                unit: 'F'
-            }
+        // TOP LEVEL MODEL
+        model() {
+            return {
+                products: [
+                    {
+                        id: 1,
+                        name: 'one'
+                    },
+                    {
+                        id: 2,
+                        name: 'two'
+                    },
+                    {
+                        id: 3,
+                        name: 'three'
+                    }
+                ],
+                cart: [
+                    {
+                        id: 1,
+                        name: 'one',
+                        quantity: 2
+                    },
+                    {
+                        id: 3,
+                        name: 'three',
+                        quantity: 3
+                    }
+                ],
+                id: 4
+            };
         },
-        pairs: [],
-        list: {
-            input: '',
-            items: []
+        // TOP LEVEL VIEW
+        view(model) {
+            console.log("APP MODEL: ");
+            console.log(model);
+            return (
+                <Router>
+                    <div id="app">
+                        {statics.view(model)}
+                        {routes.view(model)}
+                    </div>
+                </Router>
+            );
         }
-    }
-}
-
-// RENDER
-export function render(app) {
-    return function (model) {
-        console.log(model);
-        ReactDOM.render(app.view(model), document.getElementById('root'));
-    }
+    };
 }

@@ -7,9 +7,9 @@ export const {
     nestComponent
 } = u;
 
-export default function initialize(createApp, initialModel, render) {
+export default function initialize(createApp, render) {
     // UPDATE
-    let update = stream(initialModel); // -- must not be invoked here
+    let update = stream();
     
     // APP
     let app = createApp(update);
@@ -21,5 +21,5 @@ export default function initialize(createApp, initialModel, render) {
     models.map(render(app));
     
     // INITIALIZE APP
-    models(initialModel()); // -- must be invoked here
+    models(app.model());
 }
