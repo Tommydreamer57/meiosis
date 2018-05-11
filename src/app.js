@@ -8,8 +8,7 @@ import http from './http';
 // APP
 export default function createApp(update) {
     // INITIAL DATA
-    http.getProducts(update);
-    http.getCart(update);
+    http.getEverything(update);
     // CHILDREN
     let statics = createStatics(update);
     let routes = createRoutes(update);

@@ -1,17 +1,12 @@
 import React from 'react';
-import axios from 'axios';
+import http from '../../../http';
 
 export default function createAdd(update) {
     let $name, $price;
     let name = '';
     let price = 0;
     function addProduct() {
-        axios.post('/api/products', { name, price }).then(({ data: products }) => {
-            update(model => ({
-                ...model,
-                products
-            }));
-        });
+        http.addProduct(update, { name, price });
     }
     function onKeyDown({ target, key }) {
         if (key === 'Enter') {

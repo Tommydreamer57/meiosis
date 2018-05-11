@@ -27,7 +27,7 @@ header a {
 }
 
 header a, header li {
-    transition: 0.4s;
+    transition: 0.2s;
 }
 
 .link-current a {

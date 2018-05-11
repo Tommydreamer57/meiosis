@@ -1,7 +1,7 @@
 module.exports = {
     read(req, res) {
-        let { id } = req.session.user;
-        req.db.read_cart({ id })
+        let { id: user_id } = req.session.user;
+        req.db.read_cart({ id: user_id })
             .then(cart => {
                 res.status(200).send(cart);
             })
@@ -39,14 +39,6 @@ module.exports = {
             .catch(err => {
                 console.log(err);
                 res.status(200).send(err);
-            });
-    },
-    order(req, res) {
-        let { id: user_id } = req.session.user;
-        req.db.create_order({ user_id })
-            .then(order => {
-                console.log(order)
-                res.status(200).send(order);
             });
     }
 }

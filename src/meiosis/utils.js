@@ -40,9 +40,6 @@ function isObjNotArr(obj) {
 
 // MERGE
 export function merge(old, neww) {
-    // console.log("MERGING");
-    // console.log(old);
-    // console.log(neww);
     if (old === neww) return neww;
     let obj = { ...old };
     if (typeof neww === 'function') {
