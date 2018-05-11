@@ -1,9 +1,18 @@
 import axios from 'axios';
 
+function convertOrderDates(orders) {
+    return orders.map(order => ({
+        ...order,
+        timestamp: new Date(order.timestamp),
+        timestring: new Date(order.timestamp).toString().replace(/(\d{4}) (\d{2}:\d{2})(:\d{2})(.*)$/, '$1')
+    }));
+}
+
 export default {
     getEverything(update) {
         axios.get('/api/everything')
             .then(({ data: { products, cart, orders } }) => {
+                orders = convertOrderDates(orders);
                 update(model => ({
                     ...model,
                     products,
@@ -71,10 +80,12 @@ export default {
     },
     placeOrder(update) {
         axios.post('/api/orders')
-            .then(({ data: order }) => {
-                console.log(order);
+            .then(({ data: { orders, cart } }) => {
+                orders = convertOrderDates(orders);
                 update(model => ({
-                    ...model
+                    ...model,
+                    cart,
+                    orders
                 }));
             });
     }

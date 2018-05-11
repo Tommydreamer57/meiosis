@@ -52,7 +52,7 @@ app.post('/api/orders', oc.create);
 
 // PRODUCTS
 app.post('/api/products', pc.create);
-app.put('/api/products', pc.update);
+app.put('/api/products/:id', pc.update);
 app.delete('/api/products/:id', pc.delete);
 
 // LISTEN

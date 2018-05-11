@@ -18,7 +18,8 @@ export default function createApp(update) {
         model() {
             return {
                 products: [],
-                cart: []
+                cart: [],
+                orders: []
             };
         },
         // TOP LEVEL VIEW

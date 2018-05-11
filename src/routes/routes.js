@@ -1,12 +1,14 @@
 import React from 'react';
 import { Switch, Route } from 'react-router-dom';
-import createProducts from './views/products/products';
 import createCart from './views/cart/cart';
+import createOrders from './views/orders/orders';
+import createProducts from './views/products/products';
 import createAdmin from './views/admin/admin';
 
 export default function createRoutes(update) {
-    let products = createProducts(update);
     let cart = createCart(update);
+    let orders = createOrders(update);
+    let products = createProducts(update);
     let admin = createAdmin(update);
     return {
         view(model) {
@@ -21,6 +23,10 @@ export default function createRoutes(update) {
                     <Route
                         path="/cart"
                         render={props => cart.view(model, props)}
+                    />
+                    <Route
+                        path="/orders"
+                        render={props => orders.view(model, props)}
                     />
                     <Route
                         path="/products"

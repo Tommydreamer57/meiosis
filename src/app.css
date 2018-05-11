@@ -39,3 +39,13 @@ button:hover {
     border-bottom: 0.5px solid rgba(0, 0, 0, 0.2);
 }
 
+.order {
+    width: 60%;
+    margin: 0 20%;
+    padding: 24px;
+}
+
+.order .product {
+    width: calc(100% - 48px);
+    margin: 0;
+}
