@@ -3,9 +3,25 @@ import { BrowserRouter as Router } from 'react-router-dom';
 import createStatics from './statics/statics';
 import createRoutes from './routes/routes';
 import './app.css';
+import axios from 'axios';
 
 // APP
 export default function createApp(update) {
+    // INITIAL DATA
+    axios.get('/api/products').then(({ data: products }) => {
+        console.log(products);
+        update(model => ({
+            ...model,
+            products
+        }));
+    });
+    axios.get('/api/cart').then(({ data: cart }) => {
+        console.log(cart);
+        update(model => ({
+            ...model,
+            cart
+        }));
+    });
     // CHILDREN
     let statics = createStatics(update);
     let routes = createRoutes(update);
@@ -14,33 +30,8 @@ export default function createApp(update) {
         // TOP LEVEL MODEL
         model() {
             return {
-                products: [
-                    {
-                        id: 1,
-                        name: 'one'
-                    },
-                    {
-                        id: 2,
-                        name: 'two'
-                    },
-                    {
-                        id: 3,
-                        name: 'three'
-                    }
-                ],
-                cart: [
-                    {
-                        id: 1,
-                        name: 'one',
-                        quantity: 2
-                    },
-                    {
-                        id: 3,
-                        name: 'three',
-                        quantity: 3
-                    }
-                ],
-                id: 4
+                products: [],
+                cart: []
             };
         },
         // TOP LEVEL VIEW

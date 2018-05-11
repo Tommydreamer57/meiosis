@@ -1,36 +1,40 @@
 import React from 'react';
+import axios from 'axios';
 
 export default function createAdd(update) {
-    let input = '';
-    function addProduct(name) {
-        update(model => {
-            let { id } = model;
-            let product = { name, id };
-            return {
+    let $name, $price;
+    let name = '';
+    let price = 0;
+    function addProduct() {
+        axios.post('/api/products', { name, price }).then(({ data: products }) => {
+            update(model => ({
                 ...model,
-                id: id + 1,
-                products: [
-                    product,
-                    ...model.products
-                ]
-            };
+                products
+            }));
         });
-    }
-    function onChange({ target: { value } }) {
-        input = value;
     }
     function onKeyDown({ target, key }) {
         if (key === 'Enter') {
-            console.log(input);
-            addProduct(input);
-            target.value = '';
-            input = '';
+            addProduct();
+            $name.value = '';
+            $price.value = 0;
         }
+    }
+    function handleNameChange({ target }) {
+        if (!$name) $name = target;
+        name = target.value;
+    }
+    function handlePriceChange({ target }) {
+        if (!$price) $price = target;
+        price = target.value;
     }
     return {
         view(model) {
             return (
-                <input onChange={onChange} onKeyDown={onKeyDown} />
+                <div>
+                    <input type="text" placeholder="name" onChange={handleNameChange} onKeyDown={onKeyDown} />
+                    <input tabIndex={0} type="number" placeholder="price" onChange={handlePriceChange} onKeyDown={onKeyDown} />
+                </div>
             );
         }
     };

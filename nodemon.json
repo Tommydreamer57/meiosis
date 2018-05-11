@@ -12,5 +12,5 @@
     "env": {
         "NODE_ENV": "development"
     },
-    "ext": "js,json,sql"
+    "ext": "js,json,sql,env"
 }
