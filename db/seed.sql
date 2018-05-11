@@ -96,7 +96,8 @@ VALUES
 CREATE TABLE meiosis_order_products (
     id SERIAL PRIMARY KEY,
     order_id INTEGER REFERENCES meiosis_orders(id),
-    product_id INTEGER REFERENCES meiosis_products(id)
+    product_id INTEGER REFERENCES meiosis_products(id),
+    price 
 );
 
 INSERT INTO meiosis_order_products

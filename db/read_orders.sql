@@ -1,4 +1,4 @@
-SELECT order_id, product_id, timestamp, name, price, COUNT(*) FROM meiosis_orders
+SELECT order_id, product_id, timestamp, name, price, COUNT(*) AS quantity FROM meiosis_orders
 JOIN meiosis_order_products
 ON meiosis_order_products.order_id = meiosis_orders.id
 JOIN meiosis_products

@@ -1,20 +1,4 @@
-function convertOrders(orders) {
-    return orders.reduce((all, curr) => {
-        let { order_id, timestamp, product_id, name, price, quantity } = curr;
-        let order = all.find(ord => ord.id === order_id)
-        if (order) {
-            order.products.push({ id: product_id, name, price, quantity });
-        } else {
-            order = {
-                id: order_id,
-                timestamp,
-                products: [{ id: product_id, name, price, quantity }]
-            };
-            all.push(order);
-        }
-        return all;
-    }, []);
-}
+const convertOrders = require('../utils/utils');
 
 module.exports = {
     read(req, res) {
