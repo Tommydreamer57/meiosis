@@ -17,7 +17,7 @@ export default function createAdd(update) {
         if (key === 'Enter') {
             addProduct();
             $name.value = '';
-            $price.value = 0;
+            $price.value = null;
         }
     }
     function handleNameChange({ target }) {
@@ -31,9 +31,19 @@ export default function createAdd(update) {
     return {
         view(model) {
             return (
-                <div>
-                    <input type="text" placeholder="name" onChange={handleNameChange} onKeyDown={onKeyDown} />
-                    <input tabIndex={0} type="number" placeholder="price" onChange={handlePriceChange} onKeyDown={onKeyDown} />
+                <div className="product" >
+                    <input
+                        type="text"
+                        placeholder="name"
+                        onChange={handleNameChange}
+                        onKeyDown={onKeyDown}
+                    />
+                    <input
+                        type="number"
+                        placeholder="price"
+                        onChange={handlePriceChange}
+                        onKeyDown={onKeyDown}
+                    />
                 </div>
             );
         }

@@ -3,25 +3,13 @@ import { BrowserRouter as Router } from 'react-router-dom';
 import createStatics from './statics/statics';
 import createRoutes from './routes/routes';
 import './app.css';
-import axios from 'axios';
+import http from './http';
 
 // APP
 export default function createApp(update) {
     // INITIAL DATA
-    axios.get('/api/products').then(({ data: products }) => {
-        console.log(products);
-        update(model => ({
-            ...model,
-            products
-        }));
-    });
-    axios.get('/api/cart').then(({ data: cart }) => {
-        console.log(cart);
-        update(model => ({
-            ...model,
-            cart
-        }));
-    });
+    http.getProducts(update);
+    http.getCart(update);
     // CHILDREN
     let statics = createStatics(update);
     let routes = createRoutes(update);

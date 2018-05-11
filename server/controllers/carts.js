@@ -40,5 +40,13 @@ module.exports = {
                 console.log(err);
                 res.status(200).send(err);
             });
+    },
+    order(req, res) {
+        let { id: user_id } = req.session.user;
+        req.db.create_order({ user_id })
+            .then(order => {
+                console.log(order)
+                res.status(200).send(order);
+            });
     }
 }

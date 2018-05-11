@@ -8,7 +8,7 @@ export default function createStatics(update) {
         view(model) {
             return (
                 <div>
-                    <Route path="/" render={props => <Header cart={model.cart} />} />
+                    <Route path="/" render={props => <Header {...props} cart={model.cart} />} />
                     {/* <MouseTracker /> */}
                 </div>
             );

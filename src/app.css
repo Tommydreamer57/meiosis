@@ -6,6 +6,10 @@ html, body, #root, #app {
     font-family: Calibri;
 }
 
+#app {
+    padding-top: 10vw;
+}
+
 section {
     display: flex;
     flex-direction: column;
@@ -24,3 +28,14 @@ button {
 button:hover {
     background: rgba(0, 0, 0, 0.1);
 }
+
+.product {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 60%;
+    padding: 24px;
+    margin: 0 20%;
+    border-bottom: 1px solid black;
+}
+

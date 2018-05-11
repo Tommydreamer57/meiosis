@@ -1,17 +1,11 @@
 import React from 'react';
 import './products.css';
-import axios from 'axios';
+import http from '../../../http';
 
 export default function createProducts(update) {
-    function addToCart(id) {
-        axios.post(`/api/cart/${id}`).then(({ data: cart }) => {
-            console.log(cart);
-            update(model => ({
-                ...model,
-                cart
-            }));
-        });
-    }
+    // HTTP METHODS
+    let addToCart = id => http.addToCart(update, id);
+    // COMPONENT
     return {
         view(model) {
             console.log("PRODUCTS MODEL:");

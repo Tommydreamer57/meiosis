@@ -1,18 +1,35 @@
 
 header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
     display: flex;
     justify-content: space-between;
     align-items: center;
     background: rgba(0, 0, 0, 0.2);
 }
 
+#filler {
+    /* width: 100%; */
+    /* width: fill; */
+    height: 100%;
+}
+
 header ul {
     display: flex;
     justify-content: space-around;
-    
 }
 
 header a {
     padding: 24px 18px;
     text-decoration: none;
+}
+
+header a, header li {
+    transition: 0.4s;
+}
+
+.link-current a {
+    background: #FFF;
 }

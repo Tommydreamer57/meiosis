@@ -1,5 +1,6 @@
 import React from 'react';
 import axios from 'axios';
+import http from '../../../http';
 
 function calculateTotal(price, quantity) {
     price = fromMoney(price);
@@ -16,32 +17,12 @@ function toMoney(amt) {
 }
 
 export default function createCart(update) {
-    function removeFromCart(id) {
-        axios.delete(`/api/cart/${id}`).then(({ data: cart }) => {
-            update(model => ({
-                ...model,
-                cart
-            }));
-        });
-    }
-    function removeOneFromCart(id) {
-        console.log(id);
-        axios.delete(`/api/cart/${id}/?amt=1`).then(({ data: cart }) => {
-            update(model => ({
-                ...model,
-                cart
-            }));
-        });
-    }
-    function addToCart(id) {
-        axios.post(`/api/cart/${id}`).then(({ data: cart }) => {
-            console.log(cart);
-            update(model => ({
-                ...model,
-                cart
-            }));
-        });
-    }
+    // HTTP METHODS
+    let removeFromCart = id => http.removeFromCart(update, id);
+    let removeOneFromCart = id => http.removeOneFromCart(update, id);
+    let addToCart = id => http.addToCart(update, id);
+    let placeOrder = () => http.placeOrder(update);
+    // COMPONENT
     return {
         view(model) {
             console.log("PRODUCTS MODEL:");
@@ -51,17 +32,28 @@ export default function createCart(update) {
                     {model.cart.map(product => (
                         <div key={`Cart ${product.name} ${product.id}`} className="product" >
                             {/* {(() => console.log(product))()} */}
-                            <h3>{product.name} {product.price} x {product.quantity} = {calculateTotal(product.price, product.quantity)}</h3>
-                            <button onClick={() => addToCart(product.id)} >INCREASE</button>
-                            {product.quantity > 1 && <button onClick={() => removeOneFromCart(product.id)} >REMOVE 1</button>}
-                            <button onClick={() => removeFromCart(product.id)} >REMOVE ALL</button>
+                            <h3>
+                                {product.name} {product.price} x {product.quantity} = {calculateTotal(product.price, product.quantity)}
+                            </h3>
+                            <button onClick={() => addToCart(product.id)} >
+                                INCREASE
+                                </button>
+                            {product.quantity > 1 &&
+                                <button onClick={() => removeOneFromCart(product.id)} >
+                                    REMOVE 1
+                                </button>}
+                            <button onClick={() => removeFromCart(product.id)} >
+                                REMOVE ALL
+                            </button>
                         </div>
                     ))}
                     <div className="product" >
-                        <h3>TOTAL</h3>
                         <h3>
-                            {toMoney(model.cart.reduce((total, product) => total + fromMoney(product.price) * product.quantity, 0))}
+                            SUBTOTAL {toMoney(model.cart.reduce((total, product) => total + fromMoney(product.price) * product.quantity, 0))}
                         </h3>
+                        <button onClick={placeOrder} >
+                            PLACE ORDER
+                        </button>
                     </div>
                 </section>
             )

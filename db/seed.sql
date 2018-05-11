@@ -1,6 +1,10 @@
 
 -- DROP TABLES
 
+DROP TABLE IF EXISTS meiosis_order_products;
+
+DROP TABLE IF EXISTS meiosis_orders;
+
 DROP TABLE IF EXISTS meiosis_cart_products;
 
 DROP TABLE IF EXISTS meiosis_users;
@@ -71,6 +75,40 @@ VALUES
 (3, 2),-- 1),
 (3, 3);--, 8);
 
--- SELECT name as product_name, price as product_price, first_name, last_name, username, email FROM meiosis_cart_products
--- JOIN meiosis_users ON meiosis_cart_products.user_id = meiosis_users.id
--- JOIN meiosis_products ON meiosis_cart_products.product_id = meiosis_products.id;
+-- ORDERS
+
+CREATE TABLE meiosis_orders (
+    id SERIAL PRIMARY KEY,
+    user_id INTEGER REFERENCES meiosis_users(id),
+    timestamp TIMESTAMP default CURRENT_TIMESTAMP
+);
+
+INSERT INTO meiosis_orders
+(user_id)
+VALUES
+(1),
+(2),
+(2),
+(3);
+
+-- ORDER PRODUCTS
+
+CREATE TABLE meiosis_order_products (
+    id SERIAL PRIMARY KEY,
+    order_id INTEGER REFERENCES meiosis_orders(id),
+    product_id INTEGER REFERENCES meiosis_products(id)
+);
+
+INSERT INTO meiosis_order_products
+(order_id, product_id)
+VALUES
+(1, 1),
+(1, 1),
+(1, 2),
+(1, 3),
+(1, 3),
+(1, 3),
+(1, 3),
+(2, 1),
+(2, 1),
+(2, 3);

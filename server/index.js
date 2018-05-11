@@ -26,7 +26,7 @@ app.use(userToSession);
 
 // DB
 massive(process.env.CONNECTION_STRING).then(db => {
-    // db.seed().then(() => console.log('refreshed database'));
+    db.seed().then(() => console.log('refreshed database'));
     app.set('db', db);
 });
 
@@ -41,6 +41,8 @@ app.get('/api/products/:id', pc.readOne);
 app.get('/api/cart', cc.read);
 app.post('/api/cart/:product_id', cc.create);
 app.delete('/api/cart/:product_id', cc.delete);
+// ORDER
+app.post('/api/order', cc.order);
 
 // ADMIN
 
