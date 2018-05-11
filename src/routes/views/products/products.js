@@ -1,24 +1,15 @@
 import React from 'react';
 import './products.css';
+import axios from 'axios';
 
 export default function createProducts(update) {
     function addToCart(id) {
-        update(model => {
-            let { cart, products } = model;
-            let product = cart.find(product => product.id === id);
-            if (product) {
-                product.quantity++;
-            } else {
-                product = products.find(product => product.id === id);
-                if (product) {
-                    product = {
-                        ...product,
-                        quantity: 1
-                    };
-                    cart = [product, ...cart];
-                }
-            }
-            return { ...model, cart };
+        axios.post(`/api/cart/${id}`).then(({ data: cart }) => {
+            console.log(cart);
+            update(model => ({
+                ...model,
+                cart
+            }));
         });
     }
     return {
@@ -28,7 +19,7 @@ export default function createProducts(update) {
             return (
                 <section id="products" >
                     {model.products.map(product => (
-                        <div className="product">
+                        <div key={`Products ${product.name} ${product.id}`} className="product">
                             <h3>{product.name}</h3>
                             <button onClick={() => addToCart(product.id)} >ADD TO CART</button>
                         </div>

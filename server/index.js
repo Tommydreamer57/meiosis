@@ -26,7 +26,7 @@ app.use(userToSession);
 
 // DB
 massive(process.env.CONNECTION_STRING).then(db => {
-    db.seed().then(() => console.log('refreshed database'));
+    // db.seed().then(() => console.log('refreshed database'));
     app.set('db', db);
 });
 

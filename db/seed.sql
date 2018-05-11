@@ -46,21 +46,30 @@ VALUES
 CREATE TABLE meiosis_cart_products (
     id SERIAL PRIMARY KEY,
     user_id INTEGER REFERENCES meiosis_users(id),
-    product_id INTEGER REFERENCES meiosis_products(id)
+    product_id INTEGER REFERENCES meiosis_products(id)--,
+    -- quantity INTEGER
 );
 
 INSERT INTO meiosis_cart_products
-(user_id, product_id)
+(user_id, product_id)--, quantity)
 VALUES
-(1, 2),
-(1, 3),
-(1, 3),
-(2, 1),
-(2, 3),
-(3, 1),
-(2, 2),
-(3, 2),
-(3, 3);
+(1, 2),-- 3),
+(1, 2),-- 3),
+(1, 2),-- 3),
+(1, 2),-- 3),
+(1, 3),-- 1),
+(1, 3),-- 1),
+(1, 3),-- 1),
+(1, 3),-- 1),
+(1, 3),-- 1),
+(1, 3),-- 1),
+(1, 3),-- 1),
+(2, 1),-- 4),
+(2, 2),-- 2),
+(2, 3),-- 6),
+(3, 1),-- 3),
+(3, 2),-- 1),
+(3, 3);--, 8);
 
 -- SELECT name as product_name, price as product_price, first_name, last_name, username, email FROM meiosis_cart_products
 -- JOIN meiosis_users ON meiosis_cart_products.user_id = meiosis_users.id
