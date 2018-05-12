@@ -1,5 +1,5 @@
 
-header {
+nav {
     position: fixed;
     top: 0;
     left: 0;
@@ -7,7 +7,7 @@ header {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    background: rgba(0, 0, 0, 0.2);
+    background: rgba(0, 0, 0, 0.25);
 }
 
 #filler {
@@ -16,20 +16,21 @@ header {
     height: 100%;
 }
 
-header ul {
+nav ul {
     display: flex;
     justify-content: space-around;
 }
 
-header a {
+nav a {
     padding: 24px 18px;
     text-decoration: none;
+    color: white;
 }
 
-header a, header li {
+nav a, nav li {
     transition: 0.2s;
 }
 
 .link-current a {
-    background: #FFF;
+    /* background: #FFF; */
 }

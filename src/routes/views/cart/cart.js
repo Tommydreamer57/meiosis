@@ -32,9 +32,9 @@ export default function createCart(update) {
                     {model.cart.map(product => (
                         <div key={`Cart ${product.name} ${product.id}`} className="product" >
                             {/* {(() => console.log(product))()} */}
-                            <h3>
+                            <h4>
                                 {product.name} {product.price} x {product.quantity} = {calculateTotal(product.price, product.quantity)}
-                            </h3>
+                            </h4>
                             <button onClick={() => addToCart(product.id)} >
                                 INCREASE
                                 </button>
@@ -48,9 +48,9 @@ export default function createCart(update) {
                         </div>
                     ))}
                     <div className="product" >
-                        <h3>
+                        <h4>
                             SUBTOTAL {toMoney(model.cart.reduce((total, product) => total + fromMoney(product.price) * product.quantity, 0))}
-                        </h3>
+                        </h4>
                         <button onClick={placeOrder} >
                             PLACE ORDER
                         </button>

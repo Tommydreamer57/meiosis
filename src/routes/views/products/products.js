@@ -14,7 +14,7 @@ export default function createProducts(update) {
                 <section id="products" >
                     {model.products.map(product => (
                         <div key={`Products ${product.name} ${product.id}`} className="product">
-                            <h3>{product.name} {product.price}</h3>
+                            <h4>{product.name} {product.price}</h4>
                             <button onClick={() => addToCart(product.id)} >ADD TO CART</button>
                         </div>
                     ))}

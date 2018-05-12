@@ -1,12 +1,12 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import './Header.css';
+import './Nav.css';
 
-export default function Header({ cart, orders, location: { pathname } }) {
-    console.log("HEADER PROPS: ");
+export default function Nav({ cart, orders, location: { pathname } }) {
+    console.log("Nav PROPS: ");
     console.log(arguments[0]);
     return (
-        <header>
+        <nav>
             <Link to="/">Home</Link>
             <div id="filler" />
             <ul>
@@ -15,6 +15,6 @@ export default function Header({ cart, orders, location: { pathname } }) {
                 <li className={pathname === '/products' ? 'link-current' : ''} ><Link to="/products" >Products</Link></li>
                 <li className={pathname === '/admin' ? 'link-current' : ''} ><Link to="/admin" >Admin</Link></li>
             </ul>
-        </header>
+        </nav>
     );
 }

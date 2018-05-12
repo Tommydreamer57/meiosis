@@ -1,11 +1,13 @@
 import React from 'react';
 import { Switch, Route } from 'react-router-dom';
+import createHome from './views/home/home';
 import createCart from './views/cart/cart';
 import createOrders from './views/orders/orders';
 import createProducts from './views/products/products';
 import createAdmin from './views/admin/admin';
 
 export default function createRoutes(update) {
+    let home = createHome(update);
     let cart = createCart(update);
     let orders = createOrders(update);
     let products = createProducts(update);
@@ -18,7 +20,7 @@ export default function createRoutes(update) {
                 <Switch>
                     <Route
                         exact path="/"
-                        render={props => "HOME"}
+                        render={props => home.view(model, props)}
                     />
                     <Route
                         path="/cart"

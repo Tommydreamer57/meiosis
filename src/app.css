@@ -4,10 +4,48 @@ html, body, #root, #app {
     padding: 0;
     width: 100%;
     font-family: Calibri;
+    background: none;
+    /* cursor: url(), crosshair !important; */
 }
 
 #app {
     padding-top: 10vw;
+    /* color: white; */
+}
+
+#parallax {
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background-image: url(http://redhandsleather.com/wp-content/uploads/2016/09/photo-1463595373836-6e0b0a8ee322.jpg);
+    background-position: cover;
+    background-size: cover;
+    z-index: -2;
+}
+
+#parallax-filter {
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    /* background: rgba(0, 0, 0, 0.05); */
+    /* background-image: linear-gradient(0deg,
+        rgba(0, 0, 0, 0.2),
+        rgba(0, 0, 0, 0.2),
+        rgba(0, 0, 0, 0.2),
+        rgba(0, 0, 0, 0.2),
+        rgba(0, 0, 0, 0.2),
+        rgba(0, 0, 0, 0.625)); */
+    opacity: 1;
+    z-index: -1;
+}
+
+.p-container {
+    padding: 20vw;
+    background: #DDD;
 }
 
 section {
@@ -18,15 +56,20 @@ section {
 }
 
 button {
-    background: none;
     border: none;
     outline: none;
-    padding: 6px 8px;
-    border-radius: 4px;
+    padding: 8px 10px;
+    border-radius: 6px;
+    background: rgba(0, 0, 0, 0.1);
+    transition: 0.1s;
 }
 
 button:hover {
-    background: rgba(0, 0, 0, 0.1);
+    background: rgba(0, 0, 0, 0.2);
+}
+
+button:active {
+    background: rgba(0, 0, 0, 0.3);
 }
 
 .product {
@@ -45,7 +88,30 @@ button:hover {
     padding: 24px;
 }
 
+.order .product-wrapper {
+    width: calc(100% - 24px);
+    padding: 12px;
+}
+
 .order .product {
     width: calc(100% - 48px);
     margin: 0;
+}
+
+.q-and-p {
+    display: flex;
+    justify-content: space-between;
+    min-width: 20%;
+}
+
+h3 {
+    font-size: 20px;
+}
+
+h4 {
+    font-size: 18px;
+}
+
+h5 {
+    font-size: 16px;
 }

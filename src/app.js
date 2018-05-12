@@ -29,6 +29,7 @@ export default function createApp(update) {
             return (
                 <Router>
                     <div id="app">
+                        <div id="parallax-filter" />    
                         {statics.view(model)}
                         {routes.view(model)}
                     </div>

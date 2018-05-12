@@ -25,7 +25,7 @@ export default class MouseTracker extends Component {
         let { pageX, pageY } = this.state;
         let style = {
             position: 'fixed',
-            background: 'red',
+            background: 'black',
             zIndex: 999,
             opacity: 0.25
         }
